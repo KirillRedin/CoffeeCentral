@@ -28,7 +28,7 @@ class City:
 
                 if coffee_shop_num < self.coffee_shops_amount:
                     self.add_coffee_shop(line)
-                elif distance_num < self.distances_amount and self.current_case.case_status:
+                elif distance_num < self.distances_amount and self.current_case.status:
                     optimal_position = self.get_optimal_position(distance_num)
                     self.current_case.add_optimal_position(optimal_position)
                 else:
@@ -122,7 +122,11 @@ class City:
         self.case_started = False
 
     def print_result(self):
-        pass
+        for case in self.cases:
+            case.print()
+
+        for error in self.errors:
+            print(error)
 
 
 

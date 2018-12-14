@@ -11,3 +11,15 @@ class Case:
     def add_error(self, error):
         self.errors.append(error)
         self.status = False
+
+    def print(self):
+        print('CASE %d:' % self.case_num)
+
+        if self.status:
+            for optimal_position in self.optimal_positions:
+                print('%d (%d, %d)' % optimal_position['distance'], optimal_position['x'], optimal_position['y'])
+        else:
+            for error in self.errors:
+                print(error)
+
+        print()
