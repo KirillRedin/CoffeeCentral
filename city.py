@@ -25,7 +25,7 @@ class City:
                 if coffee_shop_num < self.coffee_shops_amount:
                     self.add_coffee_shop(line)
                 elif distance_num < self.distances_amount and self.case_status:
-                    pass
+                    self.get_optimal_position(distance_num)
                 else:
                     self.print_result()
                     self.case_started = False
@@ -51,10 +51,10 @@ class City:
 
     def fill_grid(self, length, width):
         for x in range(0, length):
-            cell = []
+            locations = []
             for y in range(0, width):
-                cell.append(0)
-            self.grid.append(cell)
+                locations.append(0)
+            self.grid.append(locations)
 
     def add_coffee_shop(self, line, line_num):
         dx = len(self.grid)
@@ -69,6 +69,7 @@ class City:
                 self.case_status = False
 
             if 1 < x < dx and 1 < y < dy:
+                self.grid[x][y] = -1
                 self.coffee_shops.append({'x': x, 'y': y})
             else:
                 self.errors.append('Error. Wrong coffee shop coordinates. Line %d' % line_num)
@@ -77,8 +78,37 @@ class City:
             self.errors.append('Error. Coffee shop line must contain 2 arguments. Line %d' % line_num)
             self.case_status = False
 
+    def get_optimal_position(self, distance):
+        self.mark_reachable_locations(distance)
+
+        optimal_position = None
+        max_reached = 0
+
+        for i in range(0, distance + 1):
+            for j in range(0, distance + 1):
+                if self.grid[i][j] > max_reached:
+                    max_reached = self.grid[i][j]
+                    optimal_position = {'x': i, 'y': j}
+                elif self.grid[i][j] == max_reached != 0:
+                    if i < optimal_position['x'] and j <= optimal_position['y']:
+                        optimal_position = {'x': i, 'y': j}
+
+    def mark_reachable_locations(self, distance):
+        for coffee_shop in self.coffee_shops:
+            x = coffee_shop['x']
+            y = coffee_shop['y']
+
+            for i in range(-distance, distance + 1):
+                for j in range(abs(i) - distance, distance - abs(i)):
+                    try:
+                        if self.grid[x + i][y + j] != -1:
+                            self.grid[x + i][y + j] += 1
+                    except IndexError:
+                        pass
+
     def print_result(self):
         pass
+
 
 
 
