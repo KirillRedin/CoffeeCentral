@@ -17,7 +17,7 @@ class Case:
 
         if self.status:
             for optimal_position in self.optimal_positions:
-                print('%d (%d, %d)' % (optimal_position['distance'], optimal_position['x'], optimal_position['y']))
+                print('%d (%d, %d)' % (optimal_position['amount'], optimal_position['x'], optimal_position['y']))
         else:
             for error in self.errors:
                 print(error)
